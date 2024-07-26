@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<head>
+  <title>Socket.io | chat</title>
+</head>
+<body>
+  <li id="messages"></li>
+  <form id="form" action="">
+    <input id="input" />
+    <button>SEND</button>
+  </form>
+  <script src="socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    var messages = document.getElementById('messages')
+    var form = document.getElementById('form')
+    var input = document.getElementById('input')
+
+    socket.on('client message', function(msg){
+      var item = document.createElement('li')
+      item.textContent = msg
+      messages.appendChild(item)
+      window.scrollTo(0, document.body.scrollHeight)
+    })
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        if(input.value){
+          socket.emit('chat message', input.value)
+          input.value = '';
+        }
+    })
+
+  </script>
+</body>
+</html>
